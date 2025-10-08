@@ -49,7 +49,6 @@ const getFilteredProducts = (products, { user, search, categories }) => {
 
 export const App = () => {
   // eslint-disable-next-line no-unused-vars
-  const [products, setProducts] = useState(preparedproducts);
   const [selectedUser, setSelectedUser] = useState('All');
   const [search, setSearch] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -77,7 +76,7 @@ export const App = () => {
     }
   };
 
-  const filteredProducts = getFilteredProducts(products, {
+  const filteredProducts = getFilteredProducts(preparedproducts, {
     user: selectedUser,
     search,
     categories: selectedCategories,
