@@ -51,6 +51,12 @@ export const App = () => {
     setSelectedUser(user.name);
   };
 
+  const handleResetFilters = () => {
+    setSelectedUser('All');
+    setSearch('');
+    console.log(1)
+  };
+
   const filteredProducts = getFilteredProducts(products, {
     user: selectedUser,
     search,
@@ -154,6 +160,7 @@ export const App = () => {
 
             <div className="panel-block">
               <a
+                onClick={handleResetFilters}
                 data-cy="ResetAllButton"
                 href="#/"
                 className="button is-link is-outlined is-fullwidth"
