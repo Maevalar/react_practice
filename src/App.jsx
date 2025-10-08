@@ -21,7 +21,7 @@ const preparedproducts = productsFromServer.map(product => {
   };
 });
 
-const getFilteredProducts = (products, { user }) => {
+const getFilteredProducts = (products, { user, search }) => {
   let filteredProducts = [...products];
 
   if (user !== 'All') {
@@ -30,13 +30,22 @@ const getFilteredProducts = (products, { user }) => {
     );
   }
 
+  if (search) {
+    const normalizedSearch = search.toLowerCase().trim();
+
+    filteredProducts = filteredProducts.filter(product => {
+      return product.name.toLowerCase().includes(normalizedSearch);
+    });
+  }
+
   return filteredProducts;
 };
 
 export const App = () => {
-  
+  // eslint-disable-next-line no-unused-vars
   const [products, setProducts] = useState(preparedproducts);
   const [selectedUser, setSelectedUser] = useState('All');
+  const [search, setSearch] = useState('');
 
   const handleUserFilter = user => {
     setSelectedUser(user.name);
@@ -44,6 +53,7 @@ export const App = () => {
 
   const filteredProducts = getFilteredProducts(products, {
     user: selectedUser,
+    search,
   });
 
   return (
@@ -87,7 +97,8 @@ export const App = () => {
                   type="text"
                   className="input"
                   placeholder="Search"
-                  value="qwe"
+                  value={search}
+                  onChange={event => setSearch(event.target.value.trimStart())}
                 />
 
                 <span className="icon is-left">
@@ -96,11 +107,14 @@ export const App = () => {
 
                 <span className="icon is-right">
                   {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-                  <button
-                    data-cy="ClearButton"
-                    type="button"
-                    className="delete"
-                  />
+                  {search && (
+                    <button
+                      data-cy="ClearButton"
+                      type="button"
+                      className="delete"
+                      onClick={() => setSearch('')}
+                    />
+                  )}
                 </span>
               </p>
             </div>
